@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DHIVE - AI Marketplace & Builder Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0d1628 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(15, 30, 90, 0.4);
+            border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+            padding: 15px 0;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #60a5fa;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .testing-badge {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            border: 1px solid rgba(251, 146, 60, 0.3);
+            margin: 0 10px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .user-display {
+            font-size: 13px;
+            color: #a0a0a0;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: rgba(59, 130, 246, 0.25);
+        }
+
+        .btn-back {
+            background: rgba(100, 116, 139, 0.2);
+            color: #94a3b8;
+            border: 1px solid rgba(100, 116, 139, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .btn-back:hover {
+            background: rgba(100, 116, 139, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #a0a0a0;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            margin-bottom: 15px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Marketplace */
+        .marketplace-wrapper {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+        }
+
+        .filters {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.2) 0%, rgba(15, 30, 90, 0.15) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .filter-group {
+            margin-bottom: 20px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 8px;
+            background: rgba(15, 30, 90, 0.5);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 6px;
+            color: #fff;
+            font-size: 13px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.2) 0%, rgba(15, 30, 90, 0.15) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(59, 130, 246, 0.5);
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.3) 0%, rgba(15, 30, 90, 0.25) 100%);
+        }
+
+        .product-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .product-category {
+            font-size: 12px;
+            color: #60a5fa;
+            margin-bottom: 8px;
+        }
+
+        .product-desc {
+            font-size: 12px;
+            color: #a0a0a0;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            min-height: 32px;
+        }
+
+        .product-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: #86efac;
+            margin-bottom: 10px;
+        }
+
+        .product-seller {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .product-actions button {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-buy {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .btn-buy:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        }
+
+        .btn-learn {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-learn:hover {
+            background: rgba(59, 130, 246, 0.25);
+        }
+
+        /* Forms */
+        .form-card {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.2) 0%, rgba(15, 30, 90, 0.15) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #e0e0e0;
+            font-size: 14px;
+        }
+
+        textarea,
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(15, 30, 90, 0.5);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        textarea:focus,
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: rgba(59, 130, 246, 0.6);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            background: rgba(15, 30, 90, 0.7);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        /* Cart */
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .cart-panel {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 350px;
+            height: 100vh;
+            background: rgba(15, 30, 90, 0.95);
+            border-left: 1px solid rgba(59, 130, 246, 0.2);
+            padding: 20px;
+            overflow-y: auto;
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        .cart-panel.open {
+            transform: translateX(0);
+        }
+
+        .cart-item {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .cart-total {
+            background: rgba(59, 130, 246, 0.15);
+            border-top: 2px solid rgba(59, 130, 246, 0.2);
+            padding-top: 15px;
+            margin-top: 15px;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .cart-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Builder */
+        .builder-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            min-height: 700px;
+        }
+
+        .panel {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.2) 0%, rgba(15, 30, 90, 0.15) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .panel-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .panel-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            margin: 0;
+        }
+
+        .panel-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .messages {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            display: flex;
+            gap: 10px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            max-width: 85%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        .message.assistant .message-content {
+            background: rgba(59, 130, 246, 0.15);
+            color: #e0e0e0;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .input-group input {
+            flex: 1;
+        }
+
+        .input-group button {
+            padding: 10px 20px;
+        }
+
+        .code-display {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            overflow-y: auto;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 12px;
+            color: #60a5fa;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .code-empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Feedback */
+        .feedback-section {
+            background: rgba(59, 130, 246, 0.1);
+            border-top: 1px solid rgba(59, 130, 246, 0.2);
+            padding: 20px;
+            margin-top: 40px;
+            border-radius: 8px;
+        }
+
+        .feedback-section h3 {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .feedback-section p {
+            margin-bottom: 15px;
+            color: #a0a0a0;
+            font-size: 14px;
+        }
+
+        .feedback-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .feedback-form textarea {
+            grid-column: 1 / -1;
+            min-height: 80px;
+        }
+
+        .feedback-form button {
+            grid-column: 1 / -1;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: rgba(15, 30, 90, 0.9);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            background: none;
+            border: none;
+        }
+
+        .modal-close:hover {
+            color: #fff;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(96, 165, 250, 0.3);
+            border-top-color: #60a5fa;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-weight: normal;
+            margin: 0;
+        }
+
+        input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .success-message {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #86efac;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-buttons .btn {
+            flex: 1;
+        }
+
+        @media (max-width: 1024px) {
+            .builder-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .marketplace-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .cart-panel {
+                width: 300px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(59, 130, 246, 0.3);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(59, 130, 246, 0.5);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .feature-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .feature-buttons .btn {
+            padding: 12px 24px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="navbar">
+        <div class="navbar-content">
+            <div class="logo" onclick="app.goHome()" style="cursor: pointer;">🚀 DHIVE</div>
+            <div class="testing-badge">TESTING</div>
+            <div class="nav-buttons">
+                <span class="user-display" id="userDisplay"></span>
+                <button class="btn btn-secondary" id="logoutBtn" style="display: none;" onclick="app.logout()">Logout</button>
+                <div class="cart-icon" onclick="app.toggleCart()">
+                    🛒
+                    <span class="cart-count" id="cartCount" style="display: none;">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div id="app"></div>
+    </div>
+
+    <!-- Cart Panel -->
+    <div class="cart-panel" id="cartPanel">
+        <div class="cart-close" onclick="app.toggleCart()">✕</div>
+        <h2 style="margin-bottom: 20px; margin-top: 10px;">Shopping Cart</h2>
+        <div id="cartItems"></div>
+        <div class="cart-total">
+            Total: R<span id="cartTotal">0</span>
+        </div>
+        <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" onclick="app.checkout()">Proceed to Checkout</button>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="learnMoreModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="document.getElementById('learnMoreModal').classList.remove('open')">✕</button>
+            <h2 class="modal-title">Learn More About This AI Tool</h2>
+            <div id="learnMoreContent"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="document.getElementById('paymentModal').classList.remove('open')">✕</button>
+            <h2 class="modal-title">Select Payment Method</h2>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <button class="btn btn-primary" style="width: 100%;" onclick="app.processPayment('PayFast')">💳 PayFast</button>
+                <button class="btn btn-primary" style="width: 100%;" onclick="app.processPayment('Luno')">₿ Luno</button>
+                <button class="btn btn-primary" style="width: 100%;" onclick="app.processPayment('Apple Pay')">🍎 Apple Pay</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SAMPLE_PRODUCTS = [
+            { id: 1, name: 'Email Marketing Template', category: 'Templates', price: 199, icon: '📧', desc: 'Professional HTML email template', seller: 'TemplateHub' },
+            { id: 2, name: 'Lead Generation Chatbot', category: 'AI & Automation', price: 2500, icon: '🤖', desc: 'WhatsApp lead qualifier', seller: 'DHIVE' },
+            { id: 3, name: 'Social Media Content Calendar', category: 'Templates', price: 149, icon: '📅', desc: 'Full year planning template', seller: 'ContentPro' },
+            { id: 4, name: 'Customer Support AI Bot', category: 'AI & Automation', price: 3500, icon: '💬', desc: '24/7 automated support', seller: 'DHIVE' },
+            { id: 5, name: 'Python Web Development Course', category: 'Online Courses', price: 599, icon: '🐍', desc: 'Complete beginner to advanced', seller: 'CodeMaster' },
+            { id: 6, name: 'Affiliate Marketing Ebook', category: 'Ebooks', price: 99, icon: '📚', desc: '200-page comprehensive guide', seller: 'MarketingGuru' },
+            { id: 7, name: 'WordPress Plugin - SEO Optimizer', category: 'Plugins', price: 79, icon: '🔍', desc: 'Boost your site rankings', seller: 'PluginCentral' },
+            { id: 8, name: 'Monthly Analytics Dashboard', category: 'Subscriptions', price: 199, icon: '📊', desc: 'Real-time business metrics', seller: 'DataDriven' },
+            { id: 9, name: 'Job Application Automation Tool', category: 'AI & Automation', price: 499, icon: '🎯', desc: 'Auto-apply to 100+ jobs daily', seller: 'JobHelper' },
+            { id: 10, name: 'Shopify Theme Bundle', category: 'Templates', price: 299, icon: '🛍️', desc: '5 professional themes', seller: 'DesignStudio' },
+            { id: 11, name: 'Content Writing AI Assistant', category: 'AI & Automation', price: 1999, icon: '✍️', desc: 'SEO-optimized article generator', seller: 'WritePro' },
+            { id: 12, name: 'Instagram Growth Ebook', category: 'Ebooks', price: 49, icon: '📸', desc: '10k followers in 90 days', seller: 'SocialMaster' },
+            { id: 13, name: 'Excel Dashboard Templates', category: 'Templates', price: 149, icon: '📈', desc: '20+ ready-to-use dashboards', seller: 'ExcelPro' },
+            { id: 14, name: 'AI Image Generator Integration', category: 'Plugins', price: 199, icon: '🎨', desc: 'DALL-E + Midjourney plugin', seller: 'AITools' },
+            { id: 15, name: 'Mailchimp Automation Course', category: 'Online Courses', price: 299, icon: '📧', desc: 'Email marketing mastery', seller: 'MarketingAcademy' },
+            { id: 16, name: 'Invoice Generator Plugin', category: 'Plugins', price: 89, icon: '🧾', desc: 'Auto-generate professional invoices', seller: 'BusinessTools' },
+            { id: 17, name: 'Personal Brand Toolkit', category: 'Templates', price: 249, icon: '👤', desc: 'Logo, CV, social media templates', seller: 'BrandCo' },
+            { id: 18, name: 'Customer Relationship System', category: 'AI & Automation', price: 4500, icon: '🤝', desc: 'Full CRM with AI insights', seller: 'EnterpriseAI' },
+            { id: 19, name: 'Productivity Planner Ebook', category: 'Ebooks', price: 39, icon: '⏰', desc: 'Daily optimization guide', seller: 'ProductivityHub' },
+            { id: 20, name: 'Webinar Template Bundle', category: 'Templates', price: 179, icon: '🎥', desc: 'OBS + Slide deck templates', seller: 'EventPro' },
+            { id: 21, name: 'AI Copywriting Tool', category: 'AI & Automation', price: 899, icon: '🎯', desc: 'Generate ad copy instantly', seller: 'CopyMaster' },
+            { id: 22, name: 'Data Analysis Masterclass', category: 'Online Courses', price: 799, icon: '📊', desc: 'Excel to Power BI course', seller: 'DataSchool' },
+            { id: 23, name: 'Notion CRM Template', category: 'Templates', price: 99, icon: '🗂️', desc: 'All-in-one business manager', seller: 'NotionPro' },
+            { id: 24, name: 'Security Audit Plugin', category: 'Plugins', price: 149, icon: '🔐', desc: 'Website vulnerability scanner', seller: 'SecureWeb' },
+            { id: 25, name: 'Ecommerce Funnel Ebook', category: 'Ebooks', price: 79, icon: '🛒', desc: 'Sales optimization strategies', seller: 'ConversionLab' },
+            { id: 26, name: 'Time Tracking Bot', category: 'AI & Automation', price: 599, icon: '⏱️', desc: 'Automatic time logging', seller: 'ProductivityTools' },
+            { id: 27, name: 'UI/UX Design Course', category: 'Online Courses', price: 699, icon: '🎨', desc: 'Figma masterclass', seller: 'DesignSchool' },
+            { id: 28, name: 'Landing Page Builder', category: 'Plugins', price: 129, icon: '🏗️', desc: 'Drag-drop page builder', seller: 'BuilderHub' },
+            { id: 29, name: 'Brand Guidelines Template', category: 'Templates', price: 199, icon: '📋', desc: 'Professional brand book', seller: 'BrandHub' },
+            { id: 30, name: 'Email Sequence Automation', category: 'AI & Automation', price: 1299, icon: '📬', desc: 'Automated nurture campaigns', seller: 'EmailPro' },
+            { id: 31, name: 'Financial Forecasting Ebook', category: 'Ebooks', price: 59, icon: '💰', desc: 'Predict revenue trends', seller: 'FinancePro' },
+            { id: 32, name: 'Chatbot Builder Plugin', category: 'Plugins', price: 199, icon: '💬', desc: 'No-code chatbot creation', seller: 'ChatBot Inc' },
+            { id: 33, name: 'Social Media Scheduler', category: 'Subscriptions', price: 299, icon: '📱', desc: 'Monthly social management', seller: 'SocialManager' },
+            { id: 34, name: 'Video Editing Templates', category: 'Templates', price: 149, icon: '🎬', desc: 'Premiere Pro templates', seller: 'VideoPro' },
+            { id: 35, name: 'Interview Preparation AI', category: 'AI & Automation', price: 399, icon: '🎤', desc: 'Practice with AI interviewer', seller: 'CareerBoost' },
+            { id: 36, name: 'Growth Hacking Course', category: 'Online Courses', price: 499, icon: '📈', desc: 'Startup scaling strategies', seller: 'StartupAcademy' },
+            { id: 37, name: 'PDF Generator Plugin', category: 'Plugins', price: 69, icon: '📄', desc: 'Generate PDFs from templates', seller: 'DocTools' },
+            { id: 38, name: 'Budget Planning Ebook', category: 'Ebooks', price: 45, icon: '💳', desc: 'Personal finance guide', seller: 'MoneyMaster' },
+            { id: 39, name: 'Real Estate Virtual Tour', category: 'Templates', price: 399, icon: '🏠', desc: '3D property showcase', seller: 'PropTech' },
+            { id: 40, name: 'Lead Scoring Engine', category: 'AI & Automation', price: 2999, icon: '⭐', desc: 'Qualify leads automatically', seller: 'SalesAI' },
+            { id: 41, name: 'Digital Marketing Bundle', category: 'Online Courses', price: 899, icon: '📢', desc: 'SEO + SEM + SMM', seller: 'MarketingMasters' },
+            { id: 42, name: 'Form Builder Plugin', category: 'Plugins', price: 99, icon: '📝', desc: 'Advanced form creation', seller: 'FormPro' },
+            { id: 43, name: 'LinkedIn Growth Ebook', category: 'Ebooks', price: 49, icon: '💼', desc: 'B2B networking strategy', seller: 'LinkedInPro' },
+            { id: 44, name: 'Custom Report Generator', category: 'AI & Automation', price: 1599, icon: '📑', desc: 'Automated reporting system', seller: 'ReportAI' },
+            { id: 45, name: 'Podcast Templates', category: 'Templates', price: 179, icon: '🎙️', desc: 'Audio editing templates', seller: 'PodcastPro' },
+            { id: 46, name: 'Fitness Coaching Course', category: 'Online Courses', price: 399, icon: '💪', desc: 'Personal trainer certification', seller: 'FitnessPro' },
+            { id: 47, name: 'Analytics Dashboard Plugin', category: 'Plugins', price: 179, icon: '📉', desc: 'Real-time data visualization', seller: 'DataViz' },
+            { id: 48, name: 'Copywriting Swipe File Ebook', category: 'Ebooks', price: 99, icon: '📝', desc: '500+ proven templates', seller: 'CopySwiper' },
+            { id: 49, name: 'Customer Sentiment Analyzer', category: 'AI & Automation', price: 1799, icon: '😊', desc: 'Analyze customer emotions', seller: 'SentimentAI' },
+            { id: 50, name: 'Premium Support Package', category: 'Subscriptions', price: 499, icon: '🆘', desc: '24/7 expert support', seller: 'DHIVE' }
+        ];
+
+        class DHIVEApp {
+            constructor() {
+                this.state = {
+                    page: 'marketplace',
+                    cart: [],
+                    user: null,
+                    products: [...SAMPLE_PRODUCTS],
+                    userProducts: [],
+                    builderStep: 'questions',
+                    builderAnswers: {},
+                    builderCode: '',
+                    feedback: []
+                };
+                this.render();
+                this.updateUserDisplay();
+            }
+
+            setState(updates) {
+                this.state = { ...this.state, ...updates };
+                this.render();
+                this.updateUserDisplay();
+            }
+
+            updateUserDisplay() {
+                const userDisplay = document.getElementById('userDisplay');
+                const logoutBtn = document.getElementById('logoutBtn');
+                if (this.state.user) {
+                    userDisplay.textContent = `Welcome, ${this.state.user.name}!`;
+                    logoutBtn.style.display = 'block';
+                } else {
+                    userDisplay.textContent = '';
+                    logoutBtn.style.display = 'none';
+                }
+            }
+
+            goHome() {
+                this.setState({ page: 'marketplace' });
+            }
+
+            toggleCart() {
+                document.getElementById('cartPanel').classList.toggle('open');
+            }
+
+            addToCart(product) {
+                const existing = this.state.cart.find(p => p.id === product.id);
+                if (existing) {
+                    existing.quantity++;
+                } else {
+                    this.state.cart.push({ ...product, quantity: 1 });
+                }
+                this.updateCart();
+            }
+
+            updateCart() {
+                const count = this.state.cart.reduce((sum, p) => sum + p.quantity, 0);
+                const total = this.state.cart.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+                
+                document.getElementById('cartCount').textContent = count;
+                document.getElementById('cartCount').style.display = count > 0 ? 'flex' : 'none';
+                document.getElementById('cartTotal').textContent = total;
+                
+                const cartItemsDiv = document.getElementById('cartItems');
+                if (this.state.cart.length === 0) {
+                    cartItemsDiv.innerHTML = '<p style="color: #a0a0a0; text-align: center;">Your cart is empty</p>';
+                } else {
+                    cartItemsDiv.innerHTML = this.state.cart.map(p => `
+                        <div class="cart-item">
+                            <div>
+                                <div style="margin-bottom: 3px;">${p.name}</div>
+                                <div style="color: #60a5fa; font-size: 12px;">R${p.price} x ${p.quantity}</div>
+                            </div>
+                            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;" onclick="app.removeFromCart(${p.id})">Remove</button>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            removeFromCart(productId) {
+                this.state.cart = this.state.cart.filter(p => p.id !== productId);
+                this.updateCart();
+            }
+
+            checkout() {
+                if (this.state.cart.length === 0) {
+                    alert('Your cart is empty');
+                    return;
+                }
+                document.getElementById('paymentModal').classList.add('open');
+            }
+
+            processPayment(method) {
+                const total = this.state.cart.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+                alert(`✅ Payment successful!\n\nPayment Method: ${method}\nAmount: R${total}\n\nThank you for your purchase! Your products have been added to your account.`);
+                this.state.cart = [];
+                this.updateCart();
+                document.getElementById('paymentModal').classList.remove('open');
+                document.getElementById('cartPanel').classList.remove('open');
+            }
+
+            login(email, password) {
+                if (!email || !password) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+                this.state.user = { email, name: email.split('@')[0] };
+                this.updateUserDisplay();
+                this.setState({ page: 'marketplace' });
+            }
+
+            signup(email, password, name) {
+                if (!email || !password || !name) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+                this.state.user = { email, name };
+                this.updateUserDisplay();
+                this.setState({ page: 'marketplace' });
+            }
+
+            logout() {
+                this.state.user = null;
+                this.updateUserDisplay();
+                this.setState({ page: 'marketplace' });
+            }
+
+            learnMoreAI(product) {
+                document.getElementById('learnMoreContent').innerHTML = `
+                    <div style="margin-bottom: 20px;">
+                        <p style="margin-bottom: 10px;"><strong>Product:</strong> ${product.name}</p>
+                        <p style="margin-bottom: 10px;"><strong>Price:</strong> R${product.price}</p>
+                        <p style="margin-bottom: 15px;"><strong>Description:</strong> ${product.desc}</p>
+                    </div>
+                    <h3 style="margin-bottom: 15px; color: #60a5fa;">Before purchasing, we need to understand your requirements:</h3>
+                    <form style="display: flex; flex-direction: column; gap: 10px;">
+                        <textarea placeholder="What's your main use case?" style="height: 60px; padding: 10px; background: rgba(15, 30, 90, 0.5); border: 1px solid rgba(59, 130, 246, 0.2); color: #fff; border-radius: 6px;"></textarea>
+                        <textarea placeholder="Do you have any integration requirements?" style="height: 60px; padding: 10px; background: rgba(15, 30, 90, 0.5); border: 1px solid rgba(59, 130, 246, 0.2); color: #fff; border-radius: 6px;"></textarea>
+                        <textarea placeholder="What's your expected user volume?" style="height: 60px; padding: 10px; background: rgba(15, 30, 90, 0.5); border: 1px solid rgba(59, 130, 246, 0.2); color: #fff; border-radius: 6px;"></textarea>
+                        <button type="button" class="btn btn-primary" onclick="app.addToCart({id: ${product.id}, name: '${product.name}', price: ${product.price}, category: '${product.category}'}); document.getElementById('learnMoreModal').classList.remove('open');">Proceed to Cart</button>
+                    </form>
+                `;
+                document.getElementById('learnMoreModal').classList.add('open');
+            }
+
+            startListing() {
+                if (!this.state.user) {
+                    this.setState({ page: 'login' });
+                    return;
+                }
+                this.setState({ page: 'listing' });
+            }
+
+            saveListing(data) {
+                if (!data.name || !data.price || !data.category) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+                const newProduct = {
+                    id: this.state.products.length + 1,
+                    ...data,
+                    seller: this.state.user.name,
+                    icon: '🎁'
+                };
+                this.state.products.push(newProduct);
+                this.state.userProducts.push(newProduct);
+                alert('✅ Product listed successfully! It now appears in the marketplace.');
+                this.setState({ page: 'marketplace' });
+            }
+
+            startBuilder() {
+                if (!this.state.user) {
+                    this.setState({ page: 'login' });
+                    return;
+                }
+                this.setState({ page: 'builder' });
+            }
+
+            submitBuilderAnswers(answers) {
+                if (!answers.toolType || !answers.purpose || !answers.targetUsers || !answers.integrations) {
+                    alert('Please answer all questions');
+                    return;
+                }
+                this.state.builderAnswers = answers;
+                this.state.builderCode = `// AI Tool: ${answers.toolType}\n// Purpose: ${answers.purpose}\n// Target Users: ${answers.targetUsers}\n// Integrations: ${answers.integrations}\n\n// Sample implementation:\nfunction executeAITool() {\n  console.log('AI Tool initialized');\n  return true;\n}\n\n// Build your tool using Claude's assistance\n// This is a foundation for your custom implementation`;
+                this.setState({ page: 'builder-preview' });
+            }
+
+            addBuilderMessage() {
+                const input = document.getElementById('builderInput');
+                if (!input || !input.value.trim()) return;
+                
+                const messagesDiv = document.getElementById('builderMessages');
+                if (!messagesDiv) return;
+
+                messagesDiv.innerHTML += `
+                    <div class="message user">
+                        <div class="message-content">${this.escapeHtml(input.value)}</div>
+                    </div>
+                    <div class="message assistant">
+                        <div class="message-content">Great suggestion! I've updated the tool with that feature. You can see the changes reflected in the code panel.</div>
+                    </div>
+                `;
+                input.value = '';
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }
+
+            publishToolFlow() {
+                this.setState({ page: 'publish-tool' });
+            }
+
+            publishTool(toolData) {
+                if (!toolData.toolName || !toolData.price) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+                const newProduct = {
+                    id: this.state.products.length + 1,
+                    name: toolData.toolName,
+                    category: 'AI & Automation',
+                    price: parseInt(toolData.price),
+                    icon: '🤖',
+                    desc: toolData.description || 'Custom AI Tool',
+                    seller: this.state.user.name
+                };
+                this.state.products.push(newProduct);
+                alert('✅ AI Tool published to marketplace!\n\nYour tool is now available for sale!');
+                this.setState({ page: 'marketplace' });
+            }
+
+            startSupport() {
+                if (!this.state.user) {
+                    this.setState({ page: 'login' });
+                    return;
+                }
+                this.setState({ page: 'support' });
+            }
+
+            submitSupportTicket(ticket) {
+                if (!ticket.companyName || !ticket.goal || !ticket.callNeeded) {
+                    alert('Please answer all questions');
+                    return;
+                }
+                alert(`✅ Support ticket submitted!\n\nWe'll review your request and get back to you within 24 hours.\n\nCompany/Username: ${ticket.companyName}\nGoal: ${ticket.goal}\nStrategy Call: ${ticket.callNeeded}`);
+                this.setState({ page: 'marketplace' });
+            }
+
+            submitFeedback(feedback) {
+                if (!feedback.type || !feedback.message) {
+                    alert('Please provide feedback');
+                    return;
+                }
+                this.state.feedback.push({ ...feedback, timestamp: new Date().toLocaleString() });
+                alert('✅ Thank you for your feedback! Your input helps us improve DHIVE.');
+            }
+
+            escapeHtml(text) {
+                const map = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                };
+                return text.replace(/[&<>"']/g, m => map[m]);
+            }
+
+            renderMarketplace() {
+                return `
+                    <div class="header">
+                        <div class="badge">🛍️ DHIVE Marketplace</div>
+                        <h1>Browse & Buy Digital Products</h1>
+                        <p>Discover AI tools, courses, templates, plugins, and more</p>
+                    </div>
+
+                    <div class="feature-buttons">
+                        <button class="btn btn-primary" onclick="app.startListing()">📤 Sell Your Items</button>
+                        <button class="btn btn-secondary" onclick="app.startBuilder()">🤖 Build AI Tool</button>
+                        <button class="btn btn-secondary" onclick="app.startSupport()">🆘 Support & Implementation</button>
+                    </div>
+
+                    <div class="marketplace-wrapper">
+                        <div class="filters">
+                            <div class="filter-group">
+                                <label>Category</label>
+                                <select id="categoryFilter" onchange="app.filterProducts()">
+                                    <option value="">All Categories</option>
+                                    <option value="Templates">Templates</option>
+                                    <option value="AI & Automation">AI & Automation</option>
+                                    <option value="Online Courses">Online Courses</option>
+                                    <option value="Ebooks">Ebooks</option>
+                                    <option value="Plugins">Plugins</option>
+                                    <option value="Subscriptions">Subscriptions</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Price Range</label>
+                                <select id="priceFilter" onchange="app.filterProducts()">
+                                    <option value="">All Prices</option>
+                                    <option value="0-500">R0 - R500</option>
+                                    <option value="500-1500">R500 - R1500</option>
+                                    <option value="1500+">R1500+</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="products-grid" id="productsGrid">
+                            ${this.renderProducts()}
+                        </div>
+                    </div>
+
+                    ${this.renderFeedbackSection()}
+                `;
+            }
+
+            filterProducts() {
+                const category = document.getElementById('categoryFilter').value;
+                const priceRange = document.getElementById('priceFilter').value;
+                
+                let filtered = this.state.products;
+                if (category) {
+                    filtered = filtered.filter(p => p.category === category);
+                }
+                if (priceRange) {
+                    const [min, max] = priceRange.split('-').map(x => x === '+' ? Infinity : parseInt(x));
+                    filtered = filtered.filter(p => p.price >= min && (max ? p.price <= max : true));
+                }
+                
+                document.getElementById('productsGrid').innerHTML = filtered.map(p => this.renderProductCard(p)).join('');
+            }
+
+            renderProducts() {
+                return this.state.products.map(p => this.renderProductCard(p)).join('');
+            }
+
+            renderProductCard(p) {
+                const isAI = p.category === 'AI & Automation';
+                return `
+                    <div class="product-card">
+                        <div class="product-icon">${p.icon}</div>
+                        <div class="product-name">${p.name}</div>
+                        <div class="product-category">${p.category}</div>
+                        <div class="product-desc">${p.desc}</div>
+                        <div class="product-price">R${p.price}</div>
+                        <div class="product-seller">${p.seller}</div>
+                        <div class="product-actions">
+                            ${isAI ? `
+                                <button class="btn-learn" onclick="app.learnMoreAI({id: ${p.id}, name: '${p.name}', price: ${p.price}, category: '${p.category}', desc: '${p.desc}'})">Learn More</button>
+                                <button class="btn-buy" onclick="app.learnMoreAI({id: ${p.id}, name: '${p.name}', price: ${p.price}, category: '${p.category}', desc: '${p.desc}'})">Buy</button>
+                            ` : `
+                                <button class="btn-buy" onclick="app.addToCart({id: ${p.id}, name: '${p.name}', price: ${p.price}, category: '${p.category}'})">Buy Now</button>
+                            `}
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderListing() {
+                return `
+                    <button class="btn btn-back" onclick="app.setState({page: 'marketplace'})">← Back to Marketplace</button>
+                    
+                    <div class="header">
+                        <div class="badge">📤 List Your Product</div>
+                        <h1>Sell on DHIVE</h1>
+                        <p>Share your digital products and earn 85-90% commission</p>
+                    </div>
+
+                    <div class="form-card">
+                        <div class="form-group">
+                            <label>Product Name *</label>
+                            <input type="text" id="productName" placeholder="E.g., AI Lead Generator">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Category *</label>
+                            <select id="productCategory">
+                                <option value="">Select Category</option>
+                                <option value="Templates">Templates</option>
+                                <option value="Online Courses">Online Courses</option>
+                                <option value="Ebooks">Ebooks</option>
+                                <option value="Plugins">Plugins</option>
+                                <option value="Subscriptions">Subscriptions</option>
+                                <option value="Other">Other Digital Products</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Description *</label>
+                            <textarea id="productDesc" placeholder="Describe what makes your product valuable"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Key Features (select at least 3) *</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox"> Easy to Use</label>
+                                <label><input type="checkbox"> Customizable</label>
+                                <label><input type="checkbox"> Lifetime Access</label>
+                                <label><input type="checkbox"> 30-Day Money Back</label>
+                                <label><input type="checkbox"> Priority Support</label>
+                                <label><input type="checkbox"> Regular Updates</label>
+                                <label><input type="checkbox"> Video Tutorials</label>
+                                <label><input type="checkbox"> Community Access</label>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Price (ZAR) *</label>
+                                <input type="number" id="productPrice" placeholder="99">
+                            </div>
+                            <div class="form-group">
+                                <label>Your Commission %</label>
+                                <input type="number" id="productCommission" value="85" min="10" max="90">
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" style="width: 100%;" onclick="app.saveListing({
+                            name: document.getElementById('productName').value,
+                            category: document.getElementById('productCategory').value,
+                            desc: document.getElementById('productDesc').value,
+                            price: parseInt(document.getElementById('productPrice').value),
+                            commission: parseInt(document.getElementById('productCommission').value)
+                        })">List Product on DHIVE</button>
+                    </div>
+
+                    ${this.renderFeedbackSection()}
+                `;
+            }
+
+            renderBuilder() {
+                return `
+                    <button class="btn btn-back" onclick="app.setState({page: 'marketplace'})">← Back to Marketplace</button>
+                    
+                    <div class="header">
+                        <div class="badge">🤖 AI Tool Builder</div>
+                        <h1>Create Your AI Tool</h1>
+                        <p>Answer a few questions and we'll help you build</p>
+                    </div>
+
+                    <div class="form-card">
+                        <h2 style="margin-bottom: 20px; font-size: 18px;">Tell us about your AI tool</h2>
+                        
+                        <div class="form-group">
+                            <label>What type of tool do you want to build? *</label>
+                            <select id="toolType">
+                                <option value="">Select Type</option>
+                                <option value="Customer Support Chatbot">Customer Support Chatbot</option>
+                                <option value="Lead Generation Tool">Lead Generation Tool</option>
+                                <option value="Content Generator">Content Generator</option>
+                                <option value="Data Analyzer">Data Analyzer</option>
+                                <option value="Email Automation">Email Automation</option>
+                                <option value="Social Media Bot">Social Media Bot</option>
+                                <option value="Custom Integration">Custom Integration</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>What problem does it solve? *</label>
+                            <textarea id="toolPurpose" placeholder="Describe the main purpose and benefits"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Who are your target users? *</label>
+                            <textarea id="targetUsers" placeholder="E.g., E-commerce businesses, Freelancers, etc."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>What integrations do you need? *</label>
+                            <textarea id="integrations" placeholder="E.g., WhatsApp, Slack, Shopify, etc."></textarea>
+                        </div>
+
+                        <button class="btn btn-primary" style="width: 100%;" onclick="app.submitBuilderAnswers({
+                            toolType: document.getElementById('toolType').value,
+                            purpose: document.getElementById('toolPurpose').value,
+                            targetUsers: document.getElementById('targetUsers').value,
+                            integrations: document.getElementById('integrations').value
+                        })">Build My Tool →</button>
+                    </div>
+
+                    ${this.renderFeedbackSection()}
+                `;
+            }
+
+            renderBuilderPreview() {
+                return `
+                    <button class="btn btn-back" onclick="app.setState({page: 'builder'})">← Back</button>
+                    
+                    <div class="header">
+                        <div class="badge">💻 Claude AI Studio</div>
+                        <h1>Your Tool in Development</h1>
+                        <p>Chat with Claude to refine your AI tool</p>
+                    </div>
+
+                    <div class="builder-wrapper">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2>Chat with Claude</h2>
+                            </div>
+                            <div class="panel-body">
+                                <div class="messages" id="builderMessages">
+                                    <div class="message assistant">
+                                        <div class="message-content">Hi! I'll help you build your "${this.state.builderAnswers.toolType}". Based on your requirements, I've prepared a foundation. What would you like to adjust or add?</div>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" id="builderInput" placeholder="Describe what you want to refine...">
+                                    <button class="btn btn-primary" onclick="app.addBuilderMessage()">Send</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2>Generated Code</h2>
+                            </div>
+                            <div class="panel-body">
+                                <div class="code-display">
+                                    <pre>${this.escapeHtml(this.state.builderCode)}</pre>
+                                </div>
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="btn btn-secondary" style="flex: 1;" onclick="navigator.clipboard.writeText(\`${this.state.builderCode.replace(/`/g, '\\`')}\`); alert('Code copied!')">📋 Copy Code</button>
+                                    <button class="btn btn-primary" style="flex: 1;" onclick="app.publishToolFlow()">✓ Ready to Sell</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    ${this.renderFeedbackSection()}
+                `;
+            }
+
+            renderPublishTool() {
+                return `
+                    <button class="btn btn-back" onclick="app.setState({page: 'builder-preview'})">← Back</button>
+                    
+                    <div class="header">
+                        <div class="badge">🚀 Publish Your Tool</div>
+                        <h1>List on DHIVE Marketplace</h1>
+                        <p>Your AI tool is ready to sell</p>
+                    </div>
+
+                    <div class="form-card">
+                        <div class="form-group">
+                            <label>Tool Name *</label>
+                            <input type="text" id="toolName" placeholder="Your AI Tool Name">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Description *</label>
+                            <textarea id="toolPublishDesc" placeholder="Sell your tool with a compelling description"></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Price (ZAR) *</label>
+                                <input type="number" id="toolPublishPrice" placeholder="2500">
+                            </div>
+                            <div class="form-group">
+                                <label>Your Commission %</label>
+                                <input type="number" id="toolPublishCommission" value="85" min="10" max="90">
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" style="width: 100%;" onclick="app.publishTool({
+                            toolName: document.getElementById('toolName').value,
+                            description: document.getElementById('toolPublishDesc').value,
+                            price: document.getElementById('toolPublishPrice').value,
+                            commission: document.getElementById('toolPublishCommission').value
+                        })">🚀 Publish to Marketplace</button>
+                    </div>
+
+                    ${this.renderFeedbackSection()}
+                `;
+            }
+
+            renderSupport() {
+                return `
+                    <button class="btn btn-back" onclick="app.setState({page: 'marketplace'})">← Back to Marketplace</button>
+                    
+                    <div class="header">
+                        <div class="badge">🆘 Support & Implementation</div>
+                        <h1>Get Expert Help with AI</h1>
+                        <p>Our team helps you implement AI solutions for your business</p>
+                    </div>
+
+                    <div class="form-card">
+                        <h2 style="margin-bottom: 20px; font-size: 18px;">Tell us about your needs</h2>
+                        
+                        <div class="form-group">
+                            <label>Company/User Name *</label>
+                            <input type="text" id="ticketCompany" placeholder="Your company or name">
+                        </div>
+
+                        <div class="form-group">
+                            <label>What do you want to achieve? *</label>
+                            <textarea id="ticketGoal" placeholder="Describe your business goal or challenge"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Would you like to set up a strategy call? *</label>
+                            <select id="ticketCall">
+                                <option value="">Select Option</option>
+                                <option value="Yes - I want to discuss strategy">Yes - I want to discuss strategy</option>
+                                <option value="No - Just send recommendations">No - Just send recommendations</option>
+                                <option value="Maybe - Show me options">Maybe - Show me options</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-primary" style="width: 100%;" onclick="app.submitSupportTicket({
+                            companyName: document.getElementById('ticketCompany').value,
+                            goal: document.getElementById('ticketGoal').value,
+                            callNeeded: document.getElementById('ticketCall').value
+                        })">Submit Support Ticket</button>
+                    </div>
+
+                    ${this.renderFeedbackSection()}
+                `;
+            }
+
+            renderLogin() {
+                return `
+                    <div class="header">
+                        <div class="badge">🔐 Sign In</div>
+                        <h1>Welcome to DHIVE</h1>
+                        <p>Login or create an account to get started</p>
+                    </div>
+
+                    <div class="form-card">
+                        <div style="display: flex; gap: 15px; margin-bottom: 30px;">
+                            <button class="btn btn-primary" style="flex: 1; background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3);" onclick="document.getElementById('loginForm').style.display = 'block'; document.getElementById('signupForm').style.display = 'none';">Login</button>
+                            <button class="btn btn-primary" style="flex: 1; background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3);" onclick="document.getElementById('loginForm').style.display = 'none'; document.getElementById('signupForm').style.display = 'block';">Sign Up</button>
+                        </div>
+
+                        <div id="loginForm">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="loginEmail" placeholder="your@email.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" id="loginPassword" placeholder="Password">
+                            </div>
+                            <button class="btn btn-primary" style="width: 100%;" onclick="app.login(document.getElementById('loginEmail').value, document.getElementById('loginPassword').value)">Login</button>
+                        </div>
+
+                        <div id="signupForm" style="display: none;">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" id="signupName" placeholder="Your Name">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="signupEmail" placeholder="your@email.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" id="signupPassword" placeholder="Password">
+                            </div>
+                            <button class="btn btn-primary" style="width: 100%;" onclick="app.signup(document.getElementById('signupEmail').value, document.getElementById('signupPassword').value, document.getElementById('signupName').value)">Create Account</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderFeedbackSection() {
+                return `
+                    <div class="feedback-section">
+                        <h3>💬 We'd love your feedback (Testing)</h3>
+                        <p>Help us improve DHIVE by sharing your thoughts</p>
+                        <form class="feedback-form" onsubmit="event.preventDefault(); app.submitFeedback({
+                            type: document.getElementById('feedbackType').value,
+                            message: document.getElementById('feedbackMessage').value
+                        })">
+                            <select id="feedbackType">
+                                <option value="">Select feedback type</option>
+                                <option value="Bug">Bug/Issue</option>
+                                <option value="Recommendation">Recommendation</option>
+                                <option value="Feature Request">Feature Request</option>
+                                <option value="General">General Feedback</option>
+                            </select>
+                            <textarea id="feedbackMessage" placeholder="Your feedback..."></textarea>
+                            <button class="btn btn-primary" style="width: 100%;">Submit Feedback</button>
+                        </form>
+                    </div>
+                `;
+            }
+
+            render() {
+                const app = document.getElementById('app');
+                const { page } = this.state;
+
+                if (!this.state.user && page !== 'login' && page !== 'marketplace') {
+                    app.innerHTML = this.renderLogin();
+                } else if (page === 'marketplace') {
+                    app.innerHTML = this.renderMarketplace();
+                } else if (page === 'login') {
+                    app.innerHTML = this.renderLogin();
+                } else if (page === 'listing') {
+                    app.innerHTML = this.renderListing();
+                } else if (page === 'builder') {
+                    app.innerHTML = this.renderBuilder();
+                } else if (page === 'builder-preview') {
+                    app.innerHTML = this.renderBuilderPreview();
+                } else if (page === 'publish-tool') {
+                    app.innerHTML = this.renderPublishTool();
+                } else if (page === 'support') {
+                    app.innerHTML = this.renderSupport();
+                }
+            }
+        }
+
+        const app = new DHIVEApp();
+    </script>
+</body>
+</html>
